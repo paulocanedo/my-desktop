@@ -1,0 +1,44 @@
+---
+- name: "instalando pacotes a partir do apt"
+  apt:
+    name:
+    - git
+    - vim-nox
+    - curl
+    - bashtop
+    - gimp
+    - inkscape
+    - fish #shell
+    - flatpak
+    - gnome-software-plugin-flatpak
+    state: present
+
+- name: "instalando pacotes a partir do snap"
+  snap:
+    name:
+      - whatsdesk
+      - spotify
+    state:
+      present
+
+- name: "instalando visual studio code"
+  apt:
+    deb: "https://go.microsoft.com/fwlink/?LinkID=760868"
+    state: present
+
+
+- name: "instalando mysql a partir do snap"
+  snap:
+    name: mysql-workbench-community
+    state:
+      present
+  register: mysql_result
+
+- name: "configurando mysql"
+  command: 
+    cmd: "snap connect {{ item }}"
+  with_items:
+  - mysql-workbench-community:password-manager-service
+  - mysql-workbench-community:ssh-keys
+  - mysql-workbench-community:cups-control
+  when: mysql_result.changed

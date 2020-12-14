@@ -1,0 +1,6 @@
+---
+- name: "Configurando variáveis de ambiente"
+  lineinfile:
+    line: "GDK_SCALE=2"
+    path: /etc/environment
+
